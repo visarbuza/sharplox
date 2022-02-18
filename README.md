@@ -24,4 +24,4 @@ Use:
 ```dotnet run``` for running an interactive version of the Lox language.
 
 Use:
-```dotnet run {{path}}``` for interpreting and running a lox script file.
+```dotnet run {{path}}``` for interpreting and running a Lox script file.
