@@ -81,7 +81,7 @@ public class Scanner
                 AddToken(Match('=') ? TokenType.LessEqual : TokenType.Less);
                 break;
             case '>':
-                AddToken(Match('=') ? TokenType.GreaterEqual : TokenType.Equal);
+                AddToken(Match('=') ? TokenType.GreaterEqual : TokenType.Greater);
                 break;
             case '/':
                 if (Match('/')) {
