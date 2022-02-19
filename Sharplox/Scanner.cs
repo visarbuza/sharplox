@@ -6,7 +6,7 @@ public class Scanner
     private int _start;
     private int _current;
     private int _line = 1;
-    private static readonly Dictionary<string, TokenType> Keywords = new()
+    private readonly Dictionary<string, TokenType> _keywords = new()
     {
         {"and", TokenType.And},
         {"class", TokenType.Class},
@@ -117,8 +117,8 @@ public class Scanner
         
         var text = _source.Substring(_start, _current);
         var type = TokenType.Identifier;
-        if (Keywords.ContainsKey(text))
-            type = Keywords[text];
+        if (_keywords.ContainsKey(text))
+            type = _keywords[text];
         AddToken(type);
     }
 

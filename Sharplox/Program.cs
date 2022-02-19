@@ -1,8 +1,8 @@
-﻿using Sharplox;
+﻿namespace Sharplox;
 
-public class SharpLox
+public static class SharpLox
 {
-    private static bool hadError;
+    private static bool _hadError;
     public static void Main(string[] args)
     {
         Console.WriteLine("Hello, from sharplox!");
@@ -21,14 +21,15 @@ public class SharpLox
                 break;
         }
     }
-    static void RunFile(string path)
+
+    private static void RunFile(string path)
     {
         var bytes = File.ReadAllBytes(path);
         Run(System.Text.Encoding.UTF8.GetString(bytes));
-        if (hadError) Environment.Exit(65);
+        if (_hadError) Environment.Exit(65);
     }
 
-    static void RunPrompt()
+    private static void RunPrompt()
     {
         while (true)
         {
@@ -36,11 +37,11 @@ public class SharpLox
             var line = Console.ReadLine();
             if (line == null) break;
             Run(line);
-            hadError = false;
+            _hadError = false;
         }
     }
 
-    static void Run(string source)
+    private static void Run(string source)
     {
         var tokens = new Scanner(source).ScanTokens();
         foreach (var token in tokens)
@@ -54,9 +55,9 @@ public class SharpLox
         Report(line, "", message);
     }
 
-    public static void Report(int line, string where, string message)
+    private static void Report(int line, string where, string message)
     {
         Console.WriteLine($"[line {line}] Error {where}: {message}");
-        hadError = true;
+        _hadError = true;
     }
 }
