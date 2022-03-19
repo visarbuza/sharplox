@@ -6,6 +6,7 @@ public class Scanner
     private int _start;
     private int _current;
     private int _line = 1;
+    private List<Token> Tokens { get; set; } = new();
     private readonly Dictionary<string, TokenType> _keywords = new()
     {
         {"and", TokenType.And},
@@ -31,8 +32,6 @@ public class Scanner
         _source = source;
     }
 
-    private List<Token> Tokens { get; set; } = new();
-
     public List<Token> ScanTokens()
     {
         while (!IsAtEnd())
@@ -54,7 +53,7 @@ public class Scanner
     }
 
     private void AddToken(TokenType type, object? literal) {
-        var text = _source.Substring(_start, _current);
+        var text = _source.Substring(_start, _current - _start);
         Tokens.Add(new Token(type, text, literal, _line));
     }
     
@@ -106,7 +105,7 @@ public class Scanner
                 else if (IsAlpha(c))
                     Identifier();
                 else 
-                    SharpLox.Error(_line, "Unexpected character.");
+                    SharpLox.Error(_line, $"Unexpected character {c}.");
                 break;
         }
     }
@@ -115,7 +114,7 @@ public class Scanner
     {
         while (IsAlphaNumeric(Peek())) Advance();
         
-        var text = _source.Substring(_start, _current);
+        var text = _source.Substring(_start, _current - _start);
         var type = TokenType.Identifier;
         if (_keywords.ContainsKey(text))
             type = _keywords[text];
@@ -142,7 +141,7 @@ public class Scanner
             while (char.IsDigit(Peek())) Advance();
         }
         
-        AddToken(TokenType.Number, double.Parse(_source.Substring(_start, _current)));
+        AddToken(TokenType.Number, double.Parse(_source.Substring(_start, _current - _start)));
     }
 
     private void Loxstring() {
@@ -159,7 +158,7 @@ public class Scanner
         Advance();
         
         // Trim the surrounding quotes.
-        var value = _source.Substring(_start + 1, _current - 1);
+        var value = _source.Substring(_start + 1, _current - _start - 2);
         AddToken(TokenType.String, value);
     }
 
